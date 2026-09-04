@@ -1,0 +1,110 @@
+<%- include('../partials/header') %>
+
+<main class="flex-grow-1 py-4">
+  <div class="container">
+    
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+      <div>
+        <h2 class="fw-bold text-white mb-1"><i class="fas fa-file-lines me-2 text-cyan-light"></i> Kelola Content Blocks</h2>
+        <p class="text-secondary small mb-0">Kelola sub-topik materi, teks deskripsi, dan konten yang digunakan oleh RAG Search Engine.</p>
+      </div>
+
+      <div class="d-flex gap-2">
+        <a href="/admin/dashboard" class="btn btn-outline-cyan btn-sm">
+          <i class="fas fa-arrow-left me-1"></i> Dashboard
+        </a>
+        <a href="/admin/content/new<%= sectionFilter ? '?section=' + sectionFilter : '' %>" class="btn btn-cyan btn-sm">
+          <i class="fas fa-plus me-1"></i> Tambah Content Block
+        </a>
+      </div>
+    </div>
+
+    <% if (typeof success !== 'undefined' && success) { %>
+      <div class="alert-custom-success alert-auto-dismiss mb-4">
+        <i class="fas fa-circle-check me-2"></i><%= success %>
+      </div>
+    <% } %>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="alert-custom-danger mb-4">
+        <i class="fas fa-circle-exclamation me-2"></i><%= error %>
+      </div>
+    <% } %>
+
+    <!-- Filter Card -->
+    <div class="card-custom mb-4 p-3">
+      <form action="/admin/content" method="GET" class="row align-items-center g-3">
+        <div class="col-auto">
+          <label for="sectionFilterSelect" class="col-form-label text-white fw-bold small"><i class="fas fa-filter me-1 text-cyan-light"></i> Filter Berdasarkan Section:</label>
+        </div>
+        <div class="col-md-4">
+          <select id="sectionFilterSelect" name="section" class="form-select form-select-sm" onchange="this.form.submit()">
+            <option value="">-- Semua Section Materi --</option>
+            <% if (sections && sections.length > 0) { %>
+              <% sections.forEach(sec => { %>
+                <option value="<%= sec.id %>" <%= sectionFilter && parseInt(sectionFilter, 10) === sec.id ? 'selected' : '' %>>
+                  <%= sec.judul_bagian %>
+                </option>
+              <% }); %>
+            <% } %>
+          </select>
+        </div>
+        <% if (sectionFilter) { %>
+          <div class="col-auto">
+            <a href="/admin/content" class="btn btn-sm btn-outline-secondary">Reset Filter</a>
+          </div>
+        <% } %>
+      </form>
+    </div>
+
+    <!-- Content Table -->
+    <div class="card-custom">
+      <div class="table-responsive">
+        <table class="table-custom">
+          <thead>
+            <tr>
+              <th style="width: 200px;">Section</th>
+              <th style="width: 70px;">Urutan</th>
+              <th style="width: 240px;">Judul Sub-topik</th>
+              <th>Preview Konten</th>
+              <th style="width: 140px; text-align: center;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (blocks && blocks.length > 0) { %>
+              <% blocks.forEach(b => { %>
+                <tr>
+                  <td><span class="badge bg-dark border border-secondary text-cyan-light"><%= b.judul_bagian %></span></td>
+                  <td class="text-center font-monospace text-muted">#<%= b.urutan %></td>
+                  <td class="fw-medium text-white"><%= b.judul_sub %></td>
+                  <td class="text-secondary small">
+                    <%= b.konten_preview ? b.konten_preview.replace(/<[^>]*>/g, '').substring(0, 120) + '...' : '' %>
+                  </td>
+                  <td class="text-center">
+                    <div class="d-flex justify-content-center gap-2">
+                      <a href="/admin/content/<%= b.id %>/edit" class="btn btn-sm btn-outline-cyan px-2 py-1" title="Edit Content Block">
+                        <i class="fas fa-edit"></i>
+                      </a>
+                      <form action="/admin/content/<%= b.id %>/delete" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-outline-danger btn-confirm-delete px-2 py-1" title="Hapus Block">
+                          <i class="fas fa-trash-can"></i>
+                        </button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr>
+                <td colspan="5" class="text-center text-muted py-4">Tidak ada content block ditemukan.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
