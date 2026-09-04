@@ -1,0 +1,99 @@
+<%- include('../partials/header') %>
+
+<main class="flex-grow-1 py-4">
+  <div class="container">
+    
+    <% const isEdit = typeof block !== 'undefined' && block && block.id; %>
+
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+      <div>
+        <h2 class="fw-bold text-white mb-1">
+          <i class="fas <%= isEdit ? 'fa-pen-to-square' : 'fa-plus-circle' %> me-2 text-cyan-light"></i>
+          <%= isEdit ? 'Edit Content Block' : 'Tambah Content Block Baru' %>
+        </h2>
+        <p class="text-secondary small mb-0">Konten ini akan otomatis di-index ke PostgreSQL Full-Text Search (TSVector) untuk RAG Chatbot.</p>
+      </div>
+
+      <a href="/admin/content" class="btn btn-outline-cyan btn-sm">
+        <i class="fas fa-arrow-left me-1"></i> Kembali ke Daftar Konten
+      </a>
+    </div>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="alert-custom-danger mb-4">
+        <i class="fas fa-circle-exclamation me-2"></i><%= error %>
+      </div>
+    <% } %>
+
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <div class="card-custom">
+          <form action="<%= isEdit ? '/admin/content/' + block.id + '/update' : '/admin/content' %>" method="POST">
+            
+            <div class="mb-3">
+              <label for="section_id" class="form-label">Pilih Section Utama</label>
+              <select id="section_id" name="section_id" class="form-select" required>
+                <option value="">-- Pilih Section --</option>
+                <% if (sections && sections.length > 0) { %>
+                  <% sections.forEach(sec => { %>
+                    <% 
+                      let selected = false;
+                      if (isEdit && parseInt(block.section_id, 10) === sec.id) selected = true;
+                      else if (!isEdit && typeof preselectedSection !== 'undefined' && parseInt(preselectedSection, 10) === sec.id) selected = true;
+                      else if (!isEdit && typeof block !== 'undefined' && block && parseInt(block.section_id, 10) === sec.id) selected = true;
+                    %>
+                    <option value="<%= sec.id %>" <%= selected ? 'selected' : '' %>>
+                      <%= sec.judul_bagian %>
+                    </option>
+                  <% }); %>
+                <% } %>
+              </select>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-8">
+                <label for="judul_sub" class="form-label">Judul Sub-topik</label>
+                <input type="text" class="form-control" id="judul_sub" name="judul_sub" value="<%= isEdit || (typeof block !== 'undefined' && block) ? block.judul_sub : '' %>" placeholder="Contoh: 1.1 Taksonomi Penyalahgunaan AI" required>
+              </div>
+              <div class="col-md-4">
+                <label for="urutan" class="form-label">Nomor Urutan Block</label>
+                <input type="number" class="form-control" id="urutan" name="urutan" value="<%= isEdit || (typeof block !== 'undefined' && block) ? block.urutan : 1 %>" min="1" required>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label for="konten" class="form-label">Konten HTML Pembelajaran</label>
+              <textarea class="form-control font-monospace" id="konten" name="konten" rows="12" placeholder="Tuliskan materi pembelajaran menggunakan tag HTML (misal <p>, <ul>, <strong>, <blockquote>)..." required><%= isEdit || (typeof block !== 'undefined' && block) ? block.konten : '' %></textarea>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-cyan flex-grow-1">
+                <i class="fas fa-floppy-disk me-1"></i> <%= isEdit ? 'Perbarui Content Block' : 'Simpan Content Block' %>
+              </button>
+              <a href="/admin/content" class="btn btn-outline-secondary">Batal</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <!-- Helper Box -->
+      <div class="col-lg-4">
+        <div class="card-custom">
+          <h6 class="fw-bold text-white mb-3"><i class="fas fa-code me-2 text-cyan-light"></i> Panduan Format HTML</h6>
+          <p class="text-secondary small mb-3">Konten mendukung penulisan HTML teraman yang telah disanitasi. Gunakan contoh struktur berikut:</p>
+          
+          <div class="p-3 bg-dark rounded border border-secondary font-monospace text-secondary small">
+            <p class="text-cyan-light mb-1">&lt;p&gt;Paragraf teks biasa...&lt;/p&gt;</p>
+            <p class="text-cyan-light mb-1">&lt;strong&gt;Teks Tebal&lt;/strong&gt;</p>
+            <p class="text-cyan-light mb-1">&lt;ul&gt;<br>&nbsp;&nbsp;&lt;li&gt;Poin 1&lt;/li&gt;<br>&nbsp;&nbsp;&lt;li&gt;Poin 2&lt;/li&gt;<br>&lt;/ul&gt;</p>
+            <p class="text-cyan-light mb-0">&lt;blockquote&gt;Kutipan studi...&lt;/blockquote&gt;</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

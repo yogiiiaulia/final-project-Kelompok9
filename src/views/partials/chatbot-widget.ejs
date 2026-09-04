@@ -1,0 +1,41 @@
+<!-- Floating Chatbot FAB Button -->
+<button id="chatbot-fab" class="chatbot-fab" title="Tanya AI Assistant">
+  <i class="fas fa-robot"></i>
+</button>
+
+<!-- Floating Chatbot Window -->
+<div id="chatbot-window" class="chatbot-window">
+  <div class="chatbot-header">
+    <div class="chatbot-header-title">
+      <i class="fas fa-robot text-cyan-light fs-5"></i>
+      <div>
+        <div>WeapAI Assistant</div>
+        <small class="text-muted font-monospace" style="font-size: 0.7rem; font-weight: normal;">RAG Knowledge Model</small>
+      </div>
+    </div>
+    <button id="chatbot-close" class="chatbot-close-btn" aria-label="Tutup Chat">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <div id="widget-messages" class="widget-messages-box">
+    <div class="chat-msg ai">
+      <div class="chat-avatar">
+        <i class="fas fa-robot"></i>
+      </div>
+      <div class="chat-bubble">
+        Halo! Saya **AI Assistant** platform ini. Anda bisa menanyakan topik seputar <em>Weaponization of AI in Cybersecurity</em>, kategori ancaman, atau temuan studi Calvin Nobles. Apa yang ingin Anda ketahui?
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-input-area p-2">
+    <div class="chat-input-wrapper">
+      <input type="text" id="widget-input" placeholder="Tanyakan seputar materi..." autocomplete="off">
+      <button type="button" id="widget-send-btn" class="btn btn-sm btn-cyan px-2 py-1">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+</div>
+

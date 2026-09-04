@@ -1,0 +1,31 @@
+{
+  "name": "weaponized-ai-elearning",
+  "version": "1.0.0",
+  "description": "E-Learning Platform: Weaponization of AI in Cybersecurity — PAW Final Project",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-pg-simple": "^9.0.1",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "express-session": "^1.17.3",
+    "helmet": "^7.1.0",
+    "pg": "^8.11.3",
+    "sanitize-html": "^2.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "keywords": ["e-learning", "cybersecurity", "AI", "RAG", "Express"],
+  "author": "PAW Final Project",
+  "license": "MIT"
+}

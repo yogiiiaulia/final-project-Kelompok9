@@ -1,0 +1,69 @@
+<%- include('partials/header') %>
+
+<main class="flex-grow-1">
+  <div class="container">
+    <div class="material-container">
+      
+      <!-- Sidebar Partial -->
+      <%- include('partials/sidebar') %>
+
+      <!-- Main Reader Area -->
+      <article class="content-body">
+        <% if (typeof currentSection !== 'undefined' && currentSection) { %>
+          <div class="section-header">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="badge bg-dark border border-secondary text-cyan-light font-monospace">SECTION <%= currentSection.urutan %></span>
+              <span class="text-muted small">&bull; Modul Pembelajaran</span>
+            </div>
+            <h1 class="section-title"><%= currentSection.judul_bagian %></h1>
+          </div>
+
+          <% if (typeof blocks !== 'undefined' && blocks && blocks.length > 0) { %>
+            <% blocks.forEach(block => { %>
+              <section id="block-<%= block.id %>" class="content-block">
+                <h3 class="block-title"><%= block.judul_sub %></h3>
+                <div class="block-text">
+                  <%- block.konten %>
+                </div>
+              </section>
+            <% }); %>
+          <% } else { %>
+            <div class="p-4 text-center text-muted bg-dark rounded border border-secondary">
+              <i class="fas fa-file-circle-xmark fs-2 mb-2"></i>
+              <p class="mb-0">Belum ada konten pada section ini.</p>
+            </div>
+          <% } %>
+
+          <!-- Bottom Navigation Bar -->
+          <div class="material-nav-bottom">
+            <div>
+              <% if (typeof prevSection !== 'undefined' && prevSection) { %>
+                <a href="/materi/<%= prevSection.id %>" class="btn btn-outline-cyan btn-sm">
+                  <i class="fas fa-arrow-left me-1"></i> Section Sebelumnya: <%= prevSection.judul_bagian %>
+                </a>
+              <% } %>
+            </div>
+            <div>
+              <% if (typeof nextSection !== 'undefined' && nextSection) { %>
+                <a href="/materi/<%= nextSection.id %>" class="btn btn-cyan btn-sm">
+                  Section Selanjutnya: <%= nextSection.judul_bagian %> <i class="fas fa-arrow-right ms-1"></i>
+                </a>
+              <% } %>
+            </div>
+          </div>
+
+        <% } else { %>
+          <div class="text-center py-5">
+            <h3 class="text-white">Section Tidak Ditemukan</h3>
+            <p class="text-secondary">Silakan pilih modul materi dari daftar sidebar.</p>
+            <a href="/" class="btn btn-cyan">Kembali ke Beranda</a>
+          </div>
+        <% } %>
+      </article>
+
+    </div>
+  </div>
+</main>
+
+<%- include('partials/chatbot-widget') %>
+<%- include('partials/footer') %>

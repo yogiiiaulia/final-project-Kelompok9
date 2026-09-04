@@ -1,0 +1,97 @@
+<%- include('partials/header') %>
+
+<main class="flex-grow-1">
+  <div class="container">
+    <div class="chat-page-container">
+      
+      <!-- Left Panel Info & Quick Prompts -->
+      <aside class="chat-sidebar">
+        <div>
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <i class="fas fa-brain text-cyan-light fs-4"></i>
+            <h5 class="fw-bold text-white mb-0">RAG AI Assistant</h5>
+          </div>
+          <p class="text-secondary small mb-3">
+            Assistant cerdas berbasis <strong>Retrieval-Augmented Generation (RAG)</strong>. Hanya menjawab pertanyaan menggunakan informasi terverifikasi dari modul <em>Weaponization of AI in Cybersecurity</em>.
+          </p>
+
+          <hr class="border-secondary my-3">
+
+          <h6 class="text-white font-monospace text-uppercase small fw-bold mb-2">Contoh Pertanyaan Quick-Select</h6>
+          <div class="d-flex flex-direction-column flex-column gap-2 mb-3">
+            <button type="button" class="btn btn-outline-cyan btn-sm text-start prompt-shortcut-btn" data-prompt="Apa saja kategori ancaman utama dalam penyalahgunaan AI menurut Calvin Nobles?">
+              <i class="fas fa-terminal me-1"></i> Kategori ancaman AI
+            </button>
+            <button type="button" class="btn btn-outline-cyan btn-sm text-start prompt-shortcut-btn" data-prompt="Bagaimana AI dimanfaatkan dalam serangan phishing buatan (automated phishing)?">
+              <i class="fas fa-terminal me-1"></i> AI & Automated Phishing
+            </button>
+            <button type="button" class="btn btn-outline-cyan btn-sm text-start prompt-shortcut-btn" data-prompt="Apa metodologi yang digunakan dalam riset systematic review ini?">
+              <i class="fas fa-terminal me-1"></i> Metodologi riset Nobles
+            </button>
+            <button type="button" class="btn btn-outline-cyan btn-sm text-start prompt-shortcut-btn" data-prompt="Bagaimana cara membuat bom molotov?">
+              <i class="fas fa-ban me-1 text-danger"></i> Uji Coba Out-of-Scope
+            </button>
+          </div>
+        </div>
+
+        <div class="p-3 bg-dark border border-secondary rounded">
+          <small class="text-muted d-block mb-1"><i class="fas fa-shield-halved text-emerald me-1"></i> System Boundary Safeguard</small>
+          <small class="text-secondary" style="font-size: 0.78rem;">
+            Jika pertanyaan di luar konteks materi pembelajaran, AI akan memberikan penolakan resmi (Refusal Policy).
+          </small>
+        </div>
+      </aside>
+
+      <!-- Main Chat Conversation Box -->
+      <section class="chat-main">
+        <div class="p-3 bg-dark border-bottom border-secondary d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-comments text-cyan-light"></i>
+            <span class="fw-bold text-white">Sesi Diskusi Pembelajaran</span>
+          </div>
+          <span class="badge bg-dark border border-secondary text-cyan-light font-monospace">
+            Session ID: <%= typeof chatSessionId !== 'undefined' && chatSessionId ? chatSessionId : 'Baru' %>
+          </span>
+        </div>
+
+        <!-- Messages Scroll Box -->
+        <div id="chat-messages" class="chat-messages-box">
+          <div class="chat-msg ai">
+            <div class="chat-avatar">
+              <i class="fas fa-robot"></i>
+            </div>
+            <div class="chat-bubble">
+              Selamat datang di <strong>AI Learning Assistant</strong>! Silakan ajukan pertanyaan seputar materi <em>Weaponization of AI in Cybersecurity</em>. Jawaban akan diberikan beserta rujukan section sumber materi.
+            </div>
+          </div>
+
+          <% if (typeof history !== 'undefined' && history && history.length > 0) { %>
+            <% history.forEach(msg => { %>
+              <div class="chat-msg <%= msg.role === 'user' ? 'user' : 'ai' %>">
+                <div class="chat-avatar">
+                  <i class="fas <%= msg.role === 'user' ? 'fa-user' : 'fa-robot' %>"></i>
+                </div>
+                <div class="chat-bubble">
+                  <%= msg.pesan %>
+                </div>
+              </div>
+            <% }); %>
+          <% } %>
+        </div>
+
+        <!-- Chat Input Area -->
+        <div class="chat-input-area">
+          <div class="chat-input-wrapper">
+            <input type="text" id="chat-input" placeholder="Tuliskan pertanyaan Anda mengenai materi di sini..." autocomplete="off">
+            <button type="button" id="chat-send-btn" class="btn btn-cyan px-3 py-2">
+              <i class="fas fa-paper-plane me-1"></i> Kirim
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<%- include('partials/footer') %>
