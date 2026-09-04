@@ -1,0 +1,31 @@
+<aside class="sidebar-card">
+  <div class="sidebar-title">
+    <span><i class="fas fa-list-ol me-2 text-cyan-light"></i> Modul Materi</span>
+    <span class="badge bg-dark border border-secondary text-cyan-light"><%= typeof sections !== 'undefined' ? sections.length : 0 %> Section</span>
+  </div>
+
+  <ul class="nav-section-list">
+    <% if (typeof sections !== 'undefined' && sections && sections.length > 0) { %>
+      <% sections.forEach(sec => { %>
+        <% const isActive = typeof currentSection !== 'undefined' && currentSection && currentSection.id === sec.id; %>
+        <li class="nav-section-item <%= isActive ? 'active' : '' %>">
+          <a href="/materi/<%= sec.id %>">
+            <span class="section-num"><%= sec.urutan %></span>
+            <span class="flex-grow-1 text-truncate"><%= sec.judul_bagian %></span>
+            <% if (isActive) { %>
+              <i class="fas fa-chevron-right text-cyan-light small ms-auto"></i>
+            <% } %>
+          </a>
+        </li>
+      <% }); %>
+    <% } else { %>
+      <li class="text-muted small p-2">Belum ada section materi.</li>
+    <% } %>
+  </ul>
+
+  <hr class="border-secondary my-3">
+  
+  <a href="/chat" class="btn btn-outline-cyan btn-sm w-100 d-flex align-items-center justify-content-center gap-2">
+    <i class="fas fa-robot"></i> Tanya AI Tentang Materi
+  </a>
+</aside>
