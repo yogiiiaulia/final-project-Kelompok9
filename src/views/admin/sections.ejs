@@ -1,0 +1,109 @@
+<%- include('../partials/header') %>
+
+<main class="flex-grow-1 py-4">
+  <div class="container">
+    
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+      <div>
+        <h2 class="fw-bold text-white mb-1"><i class="fas fa-layer-group me-2 text-cyan-light"></i> Kelola Sections Materi</h2>
+        <p class="text-secondary small mb-0">Atur urutan dan judul modul/bagian utama materi e-learning.</p>
+      </div>
+
+      <a href="/admin/dashboard" class="btn btn-outline-cyan btn-sm">
+        <i class="fas fa-arrow-left me-1"></i> Kembali ke Dashboard
+      </a>
+    </div>
+
+    <% if (typeof success !== 'undefined' && success) { %>
+      <div class="alert-custom-success alert-auto-dismiss mb-4">
+        <i class="fas fa-circle-check me-2"></i><%= success %>
+      </div>
+    <% } %>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="alert-custom-danger mb-4">
+        <i class="fas fa-circle-exclamation me-2"></i><%= error %>
+      </div>
+    <% } %>
+
+    <div class="row g-4">
+      <!-- Create Section Form Card -->
+      <div class="col-lg-4">
+        <div class="card-custom">
+          <h5 class="fw-bold text-white mb-3"><i class="fas fa-folder-plus me-2 text-cyan-light"></i> Tambah Section Baru</h5>
+          
+          <form action="/admin/sections" method="POST">
+            <div class="mb-3">
+              <label for="judul_bagian" class="form-label">Judul Section / Bagian</label>
+              <input type="text" class="form-control" id="judul_bagian" name="judul_bagian" placeholder="Contoh: Section 1: Pengantar Weaponized AI" required>
+            </div>
+
+            <div class="mb-4">
+              <label for="urutan" class="form-label">Nomor Urutan</label>
+              <input type="number" class="form-control" id="urutan" name="urutan" min="1" placeholder="1" required>
+              <small class="text-muted" style="font-size: 0.78rem;">Urutan menentukan posisi tampil di sidebar.</small>
+            </div>
+
+            <button type="submit" class="btn btn-cyan w-100">
+              <i class="fas fa-plus me-1"></i> Simpan Section
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Sections Table Card -->
+      <div class="col-lg-8">
+        <div class="card-custom">
+          <h5 class="fw-bold text-white mb-3"><i class="fas fa-list me-2 text-cyan-light"></i> Daftar Section Terdaftar</h5>
+          
+          <div class="table-responsive">
+            <table class="table-custom">
+              <thead>
+                <tr>
+                  <th style="width: 80px;">Urutan</th>
+                  <th>Judul Section</th>
+                  <th style="width: 120px;">Content Blocks</th>
+                  <th style="width: 150px; text-align: center;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (typeof sections !== 'undefined' && sections && sections.length > 0) { %>
+                  <% sections.forEach(sec => { %>
+                    <tr>
+                      <td class="text-center font-monospace fw-bold text-cyan-light">#<%= sec.urutan %></td>
+                      <td class="fw-medium text-white"><%= sec.judul_bagian %></td>
+                      <td>
+                        <a href="/admin/content?section=<%= sec.id %>" class="badge bg-dark border border-secondary text-cyan-light text-decoration-none">
+                          <i class="fas fa-cubes me-1"></i> <%= sec.block_count || 0 %> block
+                        </a>
+                      </td>
+                      <td class="text-center">
+                        <div class="d-flex justify-content-center gap-2">
+                          <a href="/admin/sections/<%= sec.id %>/edit" class="btn btn-sm btn-outline-cyan px-2 py-1" title="Edit Section">
+                            <i class="fas fa-edit"></i>
+                          </a>
+                          <form action="/admin/sections/<%= sec.id %>/delete" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-outline-danger btn-confirm-delete px-2 py-1" title="Hapus Section">
+                              <i class="fas fa-trash-can"></i>
+                            </button>
+                          </form>
+                        </div>
+                      </td>
+                    </tr>
+                  <% }); %>
+                <% } else { %>
+                  <tr>
+                    <td colspan="4" class="text-center text-muted py-4">Belum ada section. Tambahkan melalui form di samping.</td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
